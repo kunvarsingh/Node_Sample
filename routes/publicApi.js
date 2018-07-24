@@ -9,7 +9,8 @@ router.get('/', function(req, res, next) {
 
 /* To register a user. */
 router.post('/register', user.register);
-
+router.post('/updateMany', user.updateMany);
+router.post('/getUpdatedValues', user.getUpdatedValues);
 /* To verify email. */
 router.get('/verify-email/:token', user.verifyEmail);
 
@@ -25,7 +26,8 @@ router.post('/reset_password', user.resetPassword);
 
 router.post('/imageUpload', user.imageUpload);
 router.post('/check', user.check);
-
+router.post('/createElement', user.createElement);
+router.post('/createFile', user.createFile);
 
 module.exports = router;
 

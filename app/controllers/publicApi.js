@@ -14,6 +14,11 @@ var GlobalMessages = require('../../config/constantMessages');
 var messageHandler = require('../../config/messageHandler');
 var multer  =   require('multer');
 const fileUpload = require('express-fileupload');
+
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+var path = require('path');
+var async = require('async');
 /*________________________________________________________________________
  * @Date:      	10 Nov,2017
  * @Method :   	Register
@@ -21,8 +26,327 @@ const fileUpload = require('express-fileupload');
  * @Purpose:   	This function is used for sign up user.
  _________________________________________________________________________
  */
+
+function writeFile(path, contents, cb) {
+  mkdirp((path.dirname), function (err) {
+    if (err) return cb(err);
+
+    fs.writeFile(path, contents, cb);
+  });
+}
+
+var createFile = function(req, res){
+    var totalComponents = req.body.totalComponent;
+    var componentName = req.body.componentName;
+    console.log("componentName::",componentName);
+    var filePath = '/home/kunvar/'+componentName+"/"+componentName+'.component.ts';
+    var htmlfilePath = '/home/kunvar/'+componentName+"/"+componentName+'.component.html';
+    var cssfilePath = '/home/kunvar/'+componentName+"/"+componentName+'.component.css';
+    
+    var tsContent = ``;
+    var htmlContent =``;
+    var obj = {html : '', ts: ''};
+
+    if (!fs.existsSync('/home/kunvar/'+componentName)){
+        fs.mkdirSync('/home/kunvar/'+componentName);
+    }else{
+
+    }
+
+    async.waterfall([
+        function(callback) {
+            if(totalComponents){
+                if(totalComponents.textbox){
+                    console.log("textbox::",totalComponents.textbox.length);
+                    for (var i = 0; i< totalComponents.textbox.length; i++) {
+                        tsContent += totalComponents.textbox[i].modelName+" : any;"+"\n";
+                        htmlContent += '<input type="text" name="'+totalComponents.textbox[i].modelName+'" placeholder="'+totalComponents.textbox[i].modelName+'" [(ngModel)]="'+totalComponents.textbox[i].modelName+'"/>';
+                    }
+                }
+                
+            }
+            obj.html = htmlContent;
+            callback(null, tsContent, htmlContent);
+        },
+        function(contentTs,contentHtml, callback){
+            tsContent = contentTs;
+            htmlContent = contentHtml;
+            console.log("textarea",obj.html);
+            if(totalComponents.textArea){
+                    console.log("textarea::",totalComponents.textArea.length);
+                    for (var i = 0; i< totalComponents.textArea.length; i++) {
+                      tsContent += totalComponents.textArea[i].modelName+" : any;"+"\n";
+                      htmlContent += '<input type="text" name="'+totalComponents.textArea[i].modelName+'" placeholder="'+totalComponents.textArea[i].modelName+'" [(ngModel)]="'+totalComponents.textArea[i].modelName+'"/>';
+                     }
+            }
+            obj.html = htmlContent;
+            callback(null, tsContent);
+        },
+        function(content, callback){
+            tsContent = content;
+            if(totalComponents.button){
+                    console.log("button::",totalComponents.button.length);
+                    for (var i = 0; i< totalComponents.button.length; i++) {
+                       tsContent += totalComponents.button[i].defination+"\n"
+                       htmlContent += '<input type="button" (click)="'+totalComponents.button[i].buttonName+'()" name="'+totalComponents.button[i].buttonName+'" value="'+totalComponents.button[i].buttonName+'"/>';
+                    }
+            }
+            console.log("button",htmlContent);
+            obj.html = htmlContent;
+            callback(null, tsContent, htmlContent);
+        },
+        function(content, contentHtml, callback){
+          tsContent = content;
+          htmlContent = contentHtml;
+            if(totalComponents.image){
+                    console.log("image::",totalComponents.image.length);
+                    for (var i = 0; i< totalComponents.image.length; i++) {
+                       // tsContent += totalComponents.image[i].defination+"\n"
+                       htmlContent += '<img src="'+totalComponents.image[i].src+'" alt="No image avaiable"/>';
+                    }
+            }
+            console.log("image",htmlContent);
+            obj.html = htmlContent;
+            callback(null, tsContent, htmlContent);  
+        },
+        function(content, contentHtml, callback){
+          tsContent = content;
+          htmlContent = contentHtml;
+            if(totalComponents.column1){
+                    console.log("column1::",totalComponents.column1.length);
+                    for (var i = 0; i< totalComponents.column1.length; i++) {
+                       // tsContent += totalComponents.image[i].defination+"\n"
+                       htmlContent += '<div src="'+totalComponents.column1[i].column1+'" class="cloumn1"><div/>';
+                    }
+            }
+            console.log("column1",htmlContent);
+            obj.html = htmlContent;
+            callback(null, tsContent, htmlContent);    
+        },
+        function(content, contentHtml, callback){
+          tsContent = content;
+          htmlContent = contentHtml;
+            if(totalComponents.column2){
+                    console.log("column2::",totalComponents.column2.length);
+                    for (var i = 0; i< totalComponents.column2.length; i++) {
+                       // tsContent += totalComponents.image[i].defination+"\n"
+                       htmlContent += '<div src="'+totalComponents.column2[i].column2+'" class="cloumn2"><div/>';
+                    }
+            }
+            console.log("column2",htmlContent);
+            obj.html = htmlContent;
+            callback(null, tsContent, htmlContent);    
+        },
+        function(content, contentHtml, callback){
+          tsContent = content;
+          htmlContent = contentHtml;
+            if(totalComponents.column3){
+                    console.log("column3::",totalComponents.column3.length);
+                    for (var i = 0; i< totalComponents.column3.length; i++) {
+                       // tsContent += totalComponents.image[i].defination+"\n"
+                       htmlContent += '<div src="'+totalComponents.column3[i].column3+'" class="cloumn3"><div/>';
+                    }
+            }
+            console.log("column3",htmlContent);
+            obj.html = htmlContent;
+            callback(null, tsContent, htmlContent);    
+        },
+        function(content, contentHtml, callback){
+          tsContent = content;
+          htmlContent = contentHtml;
+            if(totalComponents.column4){
+                    console.log("column4::",totalComponents.column4.length);
+                    for (var i = 0; i< totalComponents.column4.length; i++) {
+                       // tsContent += totalComponents.image[i].defination+"\n"
+                       htmlContent += '<div src="'+totalComponents.column4[i].column4+'" class="cloumn4"><div/>';
+                    }
+            }
+            console.log("column4",htmlContent);
+            obj.html = htmlContent;
+            callback(null, tsContent, htmlContent);    
+        }
+    ], function (err, result, result1) {
+    // console.log("result result1", result1);
+    // Make HTML component---------------------------------
+    if (fs.existsSync(htmlfilePath)) {
+        fs.unlink(htmlfilePath,function(err){
+                    if(err) return console.log(err);
+                    createHtmlFile(htmlfilePath,result1,componentName, req, res);
+            });
+    }
+    else{
+        createHtmlFile(htmlfilePath,result1,componentName, req, res);
+    }
+
+    // Make TS component -----------------------------
+    if (fs.existsSync(filePath)) {
+            // if file exists then delete it and make new one
+            fs.unlink(filePath,function(err){
+                    if(err) return console.log(err);
+                     createTsFile(filePath,result,componentName, req, res);
+            }); 
+    }else{
+        createTsFile(filePath,result,componentName, req, res);
+    }
+
+    // Make CSS component -----------------------------
+    if (fs.existsSync(cssfilePath)) {
+            fs.unlink(cssfilePath,function(err){
+                    if(err) return console.log(err);
+                     createCSSFile(cssfilePath,'', req, res);
+            }); 
+    }else{
+        createCSSFile(cssfilePath,'', req, res);
+    }
+
+    });
+}
+
+function createTsFile(filePath,fileContent,componentName, req, res){
+    var startTs = `import { Component } from '@angular/core';
+                    import { Http } from '@angular/http';
+                      @Component({
+                        selector: '`+componentName+`-root',
+                        templateUrl: './`+componentName+`.component.html',
+                        styleUrls: ['./`+componentName+`.component.css']
+                      })
+                      export class `+componentName[0].toUpperCase() + componentName.substring(1)+`Component {
+                        constructor(private http : Http){};
+                        title = '`+componentName+`';
+                        `+fileContent+`
+                    }`;
+                    fs.appendFile(filePath,startTs,function(data){
+                        console.log("TS file createed successfully!.");
+                    });
+}
+
+function createHtmlFile(htmlfilePath,fileContent,componentName, req, res){
+    var startHtml = `<!DOCTYPE html>
+                 <html>
+                 <title>`+componentName+` Page</title>
+                 <style>.wrapper{ width: 600px; margin:0px auto; padding:40px; box-shadow: 0px 0px 7px #ededed;} </style>
+                 <body class="wrapper">
+                `+fileContent+`
+                 </body>
+                </html>`;
+            fs.appendFile(htmlfilePath, startHtml ,function(data){
+                console.log("HTML file createed successfully!.");
+                res.send({status: 200, message:"Element created successfully!."});
+            });
+}
+
+
+function createCSSFile(cssfilePath,fileContent, req, res){
+    var startCss = `.body {
+                             
+                     }
+                    `;
+            fs.appendFile(cssfilePath, startCss ,function(data){
+                console.log("CSS file createed successfully!.");
+            });
+}
+
+var createElement = function(req, res){
+    var elementType = req.body.type;
+    var count = req.body.count;
+    var tsContent = ``;    
+    switch(elementType){
+        case 'input' : 
+            var content = '<input type="text" name="textbox" id="textbox">';
+            tsContent = 'dynamic_text_'+count+" : any;";
+            break;
+
+        case 'button' :
+            var content = '<input type="button" name="textbox" id="textbox">';
+            tsContent = `dynamic_button_`+count+`(){
+
+            };`;
+            break;
+
+        case 'textArea' :
+             var content = '<input type="text" name="textbox" id="textbox">';
+             tsContent = 'dynamic_text_'+count+" : any;";
+            break;
+    }
+    
+    var filePath = '/home/kunvar/login.component.ts';
+
+            if (fs.existsSync(filePath)) {
+                
+            fs.readFile(filePath, function(err, data) {
+                if(err) throw err;
+                    theFile = data.toString().split("\n");
+                    theFile.splice(-1,1);
+
+                    theFile[theFile.length] = tsContent+"\n }";
+
+                    fs.writeFile(filePath, theFile.join("\n"), function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                    console.log("Removed last 1 lines");
+                    console.log(theFile.length);
+                    res.send({status: 200, message:"Element createed successfully!."});
+               });
+            });
+
+        // fs.appendFile('/home/kunvar/login.component.ts',tsContent,function(data){
+            // res.send({status: 200, message:"Element createed successfully!."});
+         // });
+
+    }else{
+        var start = `import { Component } from '@angular/core';
+          @Component({
+            selector: 'login-root',
+            templateUrl: './login.component.html',
+            styleUrls: ['./login.component.css']
+          })
+          export class LoginComponent {
+            constructor(){};
+            title = 'login';
+            `+tsContent+`
+        }`;
+        fs.appendFile('/home/kunvar/login.component.ts',start,function(data){
+            res.send({status: 200, message:"Element createed successfully!."});
+        });
+    }
+
+     
+} 
+
 var check = function (req,res){
     res.send({name:req.body.name});
+}
+
+var updateMany = function (req,res){
+
+    User.updateMany(
+        {key: req.body.key},
+        {$set: { "gender": req.body.gender}},
+        function (err,data) {
+            if (err) {
+                res.status(HttpStatus.NOT_FOUND).send({msg:err,status:HttpStatus.NOT_FOUND});
+            }
+            else if(data){
+                res.send({msg:'Updated',status:400,data : data});
+            }
+        });
+}
+
+var getUpdatedValues = function (req,res){
+
+    User.findOneAndUpdate(
+        { email: req.body.email },
+        { $set: {"key": req.body.key} },
+        { new: true },
+        function (err,data) {
+            if (err) {
+                res.send({msg: err, status: 400 });
+            }
+            else if(data){
+                res.send({msg:'Updated',status:400, data : data});
+            }
+        });
 }
 
 var register = function (req, res) {
@@ -30,15 +354,17 @@ var register = function (req, res) {
     user = req.body;
     console.log(req.body, 'user');
     var token;
-    if(!user || !user.email || !user.password && user.accountType != 'admin') {
+    // var condition = { $and: [ { email: { $ne: 1.99 } }, { price: { $exists: true } } ] };
+    
+    if(!user || !user.email || !user.password && user.key) {
         res.status(HttpStatus.NOT_FOUND).send({msg:"Please provide all the details",status:HttpStatus.NOT_FOUND})
     } else {
-        User.findOne({email: user.email},{}, function (err,data) {
+        User.findOne({email: user.email,key : user.key},{}, function (err,data) {
             if (err) {
                 res.status(HttpStatus.NOT_FOUND).send({msg:err,status:HttpStatus.NOT_FOUND});
             }
             else if(data){
-                res.status(HttpStatus.UNAUTHORIZED).send({msg:"USER ALREADY EXIST WITH GIVEN EMAIL",status:HttpStatus.NOT_FOUND});
+                res.send({msg:"Someone is already using email: "+user.email+" and key: "+user.key,status:400});
             } else {
                 crypto.randomBytes(10, function (err, buf) {
                     token = buf.toString('hex');
@@ -51,22 +377,6 @@ var register = function (req, res) {
                     User(user).save(function (err, data) {
                         if (err) {
                              res.send(messageHandler.errMessage(err));
-                            // console.log("aaaa", err);
-                            // switch (err.name) {
-                            //     case 'ValidationError':
-                            //         for (field in err.errors) {
-                            //             console.log(err.errors);
-                            //             if (err.errors[field].path === 'email') {
-                            //                 errorMessage = 'This email id is already in use. Please select another email id.';
-                            //             } else if (err.errors[field].path === 'password') {
-                            //                 errorMessage = 'Please enter the password.';
-                            //             }
-                            //         }//for
-                            //     case 'MongoError':
-                            //         errorMessage = 'This email id is already in use. Please select another email id.';
-                            //         break;
-                            // }//switch
-                            // res.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).send({msg: errorMessage,status:HttpStatus.NON_AUTHORITATIVE_INFORMATION});
                         } else {
                             var verifyurl = 'verifyemail/' + user.verificationToken;
                             Mail.registerMail(user,verifyurl, function(msg) {
@@ -302,3 +612,9 @@ exports.forgotPassword = forgotPassword;
 exports.resetPassword = resetPassword;
 exports.imageUpload = imageUpload;
 exports.check = check;
+exports.updateMany = updateMany;
+exports.getUpdatedValues = getUpdatedValues;
+
+
+exports.createElement = createElement;
+exports.createFile = createFile;
